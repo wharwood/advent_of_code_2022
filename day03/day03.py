@@ -52,17 +52,17 @@ class elf_group:
                 for k in range(len(self.packs[2].items)):
                     if self.packs[0].items[i].type == self.packs[1].items[j].type and self.packs[0].items[i].type == self.packs[2].items[k].type:
                         self.badge = self.packs[0].items[i]
-        
-def do_part_1(input: list[str]):
-    bags = []
-    for line in input:
-        bag = pack()
-        bag.split_items(line)
-        bag.get_error_type()
-        bags.append(bag)
-    print(sum([x.error_type.priority for x in bags]))
 
-def do_part_2(input: list[str]):
+def packs_from_input(input: list[str]) -> list[pack]:
+    packs = []
+    for line in input:
+        pack = pack()
+        pack.split_items(line)
+        pack.get_error_type()
+        packs.append(pack)
+    return packs
+
+def elf_groups_from_input(input: list[str]) -> list[elf_group]:
     groups = []
     group = elf_group()
     for line in input:
@@ -77,6 +77,14 @@ def do_part_2(input: list[str]):
             bag.add_items(line)
             group.packs.append(bag)
     groups.append(group)
+    return groups
+        
+def do_part_1(input: list[str]):
+    bags = packs_from_input(input)
+    print(sum([x.error_type.priority for x in bags]))
+
+def do_part_2(input: list[str]):
+    groups = elf_groups_from_input(input)
     for g in groups:
         g.get_badge()
     print(sum([x.badge.priority for x in groups]))
