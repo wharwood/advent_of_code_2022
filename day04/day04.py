@@ -16,22 +16,21 @@ class assignment:
             self.is_overlapping = False
         else:
             self.is_overlapping = True
-        
-def do_part_1(lines: list[str]):
+
+def assignment_from_input(lines: list[str]) -> list[assignment]:
     assignments = []
     for line in lines:
         sections = line.strip().split(",")
         limit_1 = sections[0].split("-")
         limit_2 = sections[1].split("-")
         assignments.append(assignment((int(limit_1[0]),int(limit_1[1])),(int(limit_2[0]),int(limit_2[1]))))
+    return assignments
+        
+def do_part_1(lines: list[str]):
+    assignments = assignment_from_input(lines)
     print(sum([1 for x in assignments if x.is_fully_contained]))
 
 def do_part_2(lines: list[str]):
-    assignments = []
-    for line in lines:
-        sections = line.strip().split(",")
-        limit_1 = sections[0].split("-")
-        limit_2 = sections[1].split("-")
-        assignments.append(assignment((int(limit_1[0]),int(limit_1[1])),(int(limit_2[0]),int(limit_2[1]))))
+    assignments = assignment_from_input(lines)
     print(sum([1 for x in assignments if x.is_overlapping]))
     
