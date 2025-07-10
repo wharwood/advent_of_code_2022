@@ -12,6 +12,9 @@ class move:
         self.destination: int = destination
         self.quanta: int = quanta
 
+    def __repr__(self):
+        return (f"{self.quanta} from {self.source} to {self.destination}")
+
 class cargo_hold:
     def __init__(self, stacks: list[cargo_stack], moves: list[move]):
         self.stacks: list[cargo_stack] = stacks
@@ -27,11 +30,27 @@ class cargo_hold:
             stack_str = ''
         return str(str_list)
 
-    def do_moves(self):
+    def do_single_moves(self):
         for move in self.moves:
             for _ in range(move.quanta):
-                moved_crate = next(iter([x.crates.pop() for x in self.stacks if x.stack_id == move.source]))
-                next(iter([x.crates.append(moved_crate) for x in self.stacks if x.stack_id == move.destination]))
+                for stack in self.stacks:
+                    if stack.stack_id == move.source:
+                        moved_crate = stack.crates.pop()
+                for stack in self.stacks:
+                    if stack.stack_id == move.destination:
+                        stack.crates.append(moved_crate)
+
+    def do_combined_moves(self):
+        for move in self.moves:
+            moved_crates = []
+            for stack in self.stacks:
+                if stack.stack_id == move.source:
+                    for _ in range(move.quanta):
+                        moved_crates.append(stack.crates.pop())
+            moved_crates.reverse()
+            for stack in self.stacks:
+                if stack.stack_id == move.destination:
+                    stack.crates += moved_crates
     
     def get_top_crates(self) -> str:
         return ''.join([x.crates[-1] for x in self.stacks])
@@ -71,6 +90,13 @@ def do_part_1(input):
     stacks = initialize_stacks(split_input[0])
     moves = initialize_moves(split_input[1])
     hold = cargo_hold(stacks,moves)
-    hold.do_moves()
+    hold.do_single_moves()
     print(hold.get_top_crates())
-    
+
+def do_part_2(input):
+    split_input = parse_input(input)
+    stacks = initialize_stacks(split_input[0])
+    moves = initialize_moves(split_input[1])
+    hold = cargo_hold(stacks,moves)
+    hold.do_combined_moves()
+    print(hold.get_top_crates())
