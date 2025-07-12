@@ -60,7 +60,7 @@ def parse_input(input: list[str]) -> (list[str,list[str]]):
     move_strings = []
     stacks = True
     for line in input:
-        if line == "\n":
+        if line == "":
             stacks = False
         elif stacks:
             stack_strings.append(line)

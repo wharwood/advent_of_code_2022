@@ -18,13 +18,11 @@ class pack:
 
     def add_items(self, raw_items:str):
         self.items: list[pack_item] = []
-        raw_items = raw_items.strip()
         for i in range(len(raw_items)):
             self.items.append(pack_item(raw_items[i],0))
 
     def split_items(self, raw_items: str):
         self.items: list[pack_item] = []
-        raw_items = raw_items.strip()
         for i in range(len(raw_items)):
             if i < len(raw_items)/2:
                 self.items.append(pack_item(raw_items[i],1))
@@ -56,10 +54,10 @@ class elf_group:
 def packs_from_input(input: list[str]) -> list[pack]:
     packs = []
     for line in input:
-        pack = pack()
-        pack.split_items(line)
-        pack.get_error_type()
-        packs.append(pack)
+        bag = pack()
+        bag.split_items(line)
+        bag.get_error_type()
+        packs.append(bag)
     return packs
 
 def elf_groups_from_input(input: list[str]) -> list[elf_group]:

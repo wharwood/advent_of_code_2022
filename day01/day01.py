@@ -7,7 +7,7 @@ def elves_from_input(input: list[str]) -> list[elf]:
     rations = []
     elves = []
     for line in input:
-        if line == "\n":
+        if line == "":
             elves.append(elf(rations))
             rations = []
         else:
